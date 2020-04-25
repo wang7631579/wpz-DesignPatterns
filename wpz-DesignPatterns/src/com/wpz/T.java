@@ -12,6 +12,11 @@ public class T {
 
 		}
 
+		new Thread(()-> {
+				new Audio("audio/war1.wav").loop();
+			
+		}).start();
+		
 		for (;;) {
 			Thread.sleep(50);
 			tf.repaint();

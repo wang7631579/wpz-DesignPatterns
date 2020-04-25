@@ -4,8 +4,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class Bullet {
-	private int x, y;
-	private Dir dir;
+	int x, y;
+	Dir dir;
 	private static final int SPEED = 10;
 	public  static final int WIDTH = ResourceMgr.bulletL.getWidth();
 	public  static final int HEIGTH = ResourceMgr.bulletL.getHeight();
@@ -35,6 +35,9 @@ public class Bullet {
 		rect.y=this.y;
 		rect.width=WIDTH;
 		rect.height=HEIGTH;
+		
+
+		tf.bullets.add(this);
 	}
 
 	public void paint(Graphics g) {

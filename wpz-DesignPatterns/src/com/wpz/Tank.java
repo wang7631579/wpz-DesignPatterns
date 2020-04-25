@@ -7,14 +7,14 @@ import java.awt.event.KeyEvent;
 import java.util.Random;
 
 public class Tank {
-	private int x, y;
-	private Dir dir = Dir.DOWN;
+	int x, y;
+	Dir dir = Dir.DOWN;
 	private static final int SPEED = 1;
 	private boolean moving = true;
 	private boolean living = true;
-	private TankFrame tf;
+	TankFrame tf;
 	private Random random = new Random();
-	private Group group = Group.Bad;
+	Group group = Group.Bad;
 	public  static final int WIDTH = ResourceMgr.goodTankU.getWidth();
 	public  static final int HEIGTH = ResourceMgr.goodTankU.getHeight();
 	Rectangle rect = new Rectangle();
@@ -149,10 +149,12 @@ public class Tank {
 		this.dir = dir;
 	}
 
+	FireStrategy fireStrategy = new DefaultFireStrategy();
 	public void fire() {
-		int bx=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
-		int by=this.y+Tank.HEIGTH/2-Bullet.HEIGTH/2;
-		tf.bullets.add(new Bullet(bx,by,dir,tf,this.getGroup()));
+		fireStrategy.fire(this);
+//		int bx=this.x+Tank.WIDTH/2-Bullet.WIDTH/2;
+//		int by=this.y+Tank.HEIGTH/2-Bullet.HEIGTH/2;
+//		tf.bullets.add(new Bullet(bx,by,dir,tf,this.getGroup()));
 //		
 //		
 //		tf.b = ;

@@ -1,18 +1,20 @@
 package com.wpz;
 
-
-
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 public class T {
 
 	public static void main(String[] args) throws InterruptedException {
-		TankFrame f = new TankFrame();
-		for(;;) {
+		int initTankCount = Integer.parseInt((String) PropertyMgr.get("initTankCount"));
+
+		TankFrame tf = new TankFrame();
+		for (int i = 0; i < initTankCount; i++) {
+
+			tf.tanks.add(new Tank(50 + i * 80, 200, Dir.DOWN, tf, Group.Bad));
+
+		}
+
+		for (;;) {
 			Thread.sleep(50);
-			f.repaint();
+			tf.repaint();
 		}
 //		
 //		Frame f = new Frame();

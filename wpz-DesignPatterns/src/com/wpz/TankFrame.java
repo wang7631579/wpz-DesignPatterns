@@ -1,21 +1,33 @@
 package com.wpz;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TankFrame extends Frame {
 
-	Tank myTank = new Tank(200, 200, Dir.DOWN);
-	Bullet b= new Bullet(300, 300, Dir.DOWN);
+	Tank myTank = new Tank(200, 400, Dir.DOWN,this,Group.Good);
+	List<Bullet> bullets = new ArrayList<>();
+	List<Tank> tanks = new ArrayList<>();
+	
+	List<Explode> explodes = new ArrayList<>();
+	
+	
+	//List<Bullet> b= new Bullet(300, 300, Dir.DOWN);
 	private static final long serialVersionUID = 1L;
+	
+	static final int GAME_WIDTH=1080,GAME_HEIGHT=600;
 
 	public TankFrame() {
 
-		setSize(800, 600);
+		setSize(GAME_WIDTH, GAME_HEIGHT);
 		setResizable(false);
 		setTitle("WPZ");
 		setVisible(true);
@@ -31,9 +43,34 @@ public class TankFrame extends Frame {
 
 	@Override
 	public void paint(Graphics g) {
+		
+
+		
+		Color c = g.getColor();
+		g.setColor(Color.WHITE);
+		g.drawString("  "+bullets.size(), 10, 60);
+		g.setColor(c);
 		myTank.paint(g);
-		b.paint(g);
-		// System.out.println("1111111");
+		for(int i=0;i<bullets.size();i++) {
+			bullets.get(i).paint(g);
+		}
+		for(int i=0;i<tanks.size();i++) {
+			tanks.get(i).paint(g);
+		}
+		
+		for(int i=0;i<explodes.size();i++) {
+			explodes.get(i).paint(g);
+		}
+		
+		//Åö×²™zœy
+		for(int i=0;i<bullets.size();i++) {
+			for(int j=0;j<tanks.size();j++) {
+				bullets.get(i).collideWidth(tanks.get(j));
+			}
+		}
+		//
+		
+		//e.paint(g);
 	}
 
 	class MykeyListener extends KeyAdapter {
@@ -86,6 +123,10 @@ public class TankFrame extends Frame {
 			case KeyEvent.VK_DOWN:
 				bD = false;
 				break;
+				
+			case KeyEvent.VK_CONTROL:
+				myTank.fire();
+				break;
 			default:
 				break;
 			}
@@ -111,6 +152,23 @@ public class TankFrame extends Frame {
 
 		}
 
+	}
+	
+	
+	Image offScreenImage = null;
+
+	@Override
+	public void update(Graphics g) {
+		if (offScreenImage == null) {
+			offScreenImage = this.createImage(GAME_WIDTH, GAME_HEIGHT);
+		}
+		Graphics gOffScreen = offScreenImage.getGraphics();
+		Color c = gOffScreen.getColor();
+		gOffScreen.setColor(Color.BLACK);
+		gOffScreen.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+		gOffScreen.setColor(c);
+		paint(gOffScreen);
+		g.drawImage(offScreenImage, 0, 0, null);
 	}
 
 }
